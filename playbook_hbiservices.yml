@@ -1,0 +1,56 @@
+---
+- hosts: devserver
+  remote_user: ansible
+  become: yes
+
+  roles:
+  - role: common
+
+  tasks:
+
+    - name: Log into DockerHub using a custom config file
+      docker_login:
+        username: raj73docker
+        password: Mindtree@123
+        email: docker@docker.io
+
+    #- name: Check & Remove existing container
+    #  docker_container:
+    #    name: sonarqube
+    #    state: absent
+    #    keep_volumes: yes
+
+    #- name: Run application container
+    #  docker:
+    #    name: sonarqube
+    #    image: raj73docker/sonarqube:latest
+    #    pull: always
+    #    state: started
+    #    ports:
+    #      - "9000:9092"
+
+    #- name: Commit the SonarQube docker image from the container
+    #  command: docker commit -m "Added image" -a "Sonarqube" sonarqube raj73docker/sonarqube:latest
+
+    - name: Check & Remove existing container
+      docker_container:
+        name: hbiservices
+        state: absent
+        keep_volumes: yes
+
+    - name: Run application container
+      docker:
+        name: hbiservices
+        image: raj73docker/hbiservices:latest
+        pull: always
+        state: started
+        ports:
+          - "5000:8080"
+
+    - name: Check if container is running
+      shell: docker ps
+      register: status
+
+  handlers:
+    - name: Check if container is running
+      shell: docker ps

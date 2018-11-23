@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hbiservices
+  labels:
+    app: hbiservices
+spec:
+  # imagePullSecrets:
+  # - name: rajkey
+  containers:
+    - name: hbiservices
+      image: 105833771746.dkr.ecr.us-east-2.amazonaws.com/hbiservices
+      ports:
+        - containerPort: 5000
+      imagePullPolicy: Always
+      volumeMounts:
+      - name: test
+        mountPath: "/etc/test"
+        readOnly: true
+    #   env:
+    # - name: SECRET_USERNAME
+    #   valueFrom:  
+    #     secretKeyRef:
+    #       name: regsecrets
+    #       key: username
+    # - name: SECRET_PASSWORD
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: regsecrets
+    #       key: password
+  volumes:
+  - name: secretkey
+    secret:
+      secretName: rajkey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbiservices
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: hbiservices

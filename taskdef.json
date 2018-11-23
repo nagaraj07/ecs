@@ -1,0 +1,19 @@
+{
+  "family": "hbiservices",  
+  "containerDefinitions": [
+      {
+        "name": "hbiservices",
+        "image": "105833771746.dkr.ecr.us-east-2.amazonaws.com/hbiservices",
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8080,
+            "hostPort": 5005
+          }
+        ],
+        "memory": 500,
+        "cpu": 10
+      }
+    ]
+  } 
+  

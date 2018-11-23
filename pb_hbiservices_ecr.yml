@@ -1,0 +1,93 @@
+---
+- hosts: devserver
+  remote_user: ansible
+  become: yes
+
+  roles:
+  - role: common
+
+  tasks:
+
+    #- name: Install pip
+    #  apt: name=python-pip state=present
+
+    #- name: install docker-py
+    #  pip: name=docker-py
+    - name: ECR login
+      shell: "$(aws ecr get-login --region us-east-2)"
+
+    #- name: Check & Remove existing container
+    #  docker_container:
+    #    name: sonarqube
+    #    state: absent
+    #    keep_volumes: yes
+
+    #- name: Run application container
+    #  docker:
+    #    name: sonarqube
+    #    image: raj73docker/sonarqube:latest
+    #    pull: always
+    #    state: started
+    #    ports:
+    #      - "9000:9092"
+
+    #- name: Commit the SonarQube docker image from the container
+    #  command: docker commit -m "Added image" -a "Sonarqube" sonarqube raj73docker/sonarqube:latest
+
+    #- name: build docker image
+    #  docker_image:
+    #    path: ./
+    #    name: hbiservices
+    #    tag: latest
+
+    #- name: add tag
+    #  docker_image:
+    #    name: hbiservices:latest
+    #    repository: 105833771746.dkr.ecr.us-east-2.amazonaws.com
+    #    tag: 105833771746.dkr.ecr.us-east-2.amazonaws.com:latest
+
+    #- name: push image to ecr
+    #  docker_image:
+    #    name: 105833771746.dkr.ecr.us-east-2.amazonaws.com:latest
+    #    push: yes
+
+    # - name: Check & Remove existing container
+    #   docker_container:
+    #     name: 105833771746.dkr.ecr.us-east-2.amazonaws.com/hbiservices
+    #     state: absent
+    #     keep_volumes: yes
+
+    # - name: Run application container
+    #   docker:
+    #     name: hbiservices
+    #     image: 105833771746.dkr.ecr.us-east-2.amazonaws.com/hbiservices:38
+    #     pull: always
+    #     state: started
+    #     ports:
+    #       - "5000:8080"
+
+    # - name: Check & Remove existing container
+    #   docker_container:
+    #     name: 105833771746.dkr.ecr.us-east-2.amazonaws.com/sonarqube
+    #     state: absent
+    #     keep_volumes: yes
+
+    # - name: Reboot
+    #   shell: sleep 2
+
+    # - name: Run application container
+    #   docker:
+    #     name: sonarqube
+    #     image: 105833771746.dkr.ecr.us-east-2.amazonaws.com/sonarqube
+    #     pull: always
+    #     state: started
+    #     ports:
+    #       - "9000:9092"
+
+    # - name: Check if container is running
+    #   shell: docker ps
+    #   register: status
+
+  handlers:
+    - name: Check if container is running
+      shell: docker ps
